@@ -1,0 +1,156 @@
+.painel-cronometro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 35px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.display-tempo {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 6rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--laranja-start);
+  text-shadow: 0 0 20px rgba(252, 192, 45, 0.45);
+  user-select: none;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+
+.config-temporizador-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 10px auto 25px auto;
+  background: var(--fundo-card-cinza); 
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: fit-content;
+}
+
+.config-temporizador-card:hover {
+  background: rgba(38, 41, 48, 0.95);
+  border-color: var(--azul-inatel);
+  box-shadow: 0 0 20px rgba(0, 93, 164, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.input-group-timer { 
+  display: flex; 
+  align-items: center; 
+  gap: 6px; 
+}
+
+.input-timer {
+  width: 55px;
+  background: rgba(15, 16, 19, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #fff !important;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.2rem;
+  padding: 5px;
+  border-radius: 6px;
+  text-align: center;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-timer::-webkit-outer-spin-button,
+.input-timer::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-timer {
+  -moz-appearance: textfield;
+}
+
+.config-temporizador-card:hover .input-timer { 
+  border-color: rgba(0, 93, 164, 0.4) !important; 
+}
+
+.input-timer:focus {
+  border-color: var(--azul-inatel) !important;
+  box-shadow: 0 0 8px rgba(0, 93, 164, 0.5);
+  background: #0f1013 !important;
+}
+
+.label-timer { 
+  font-size: 0.8rem; 
+  font-weight: 700; 
+  color: rgba(255, 255, 255, 0.4); 
+}
+
+.config-temporizador-card:hover .label-timer { 
+  color: rgba(255, 255, 255, 0.7); 
+}
+
+.btn-definir-tempo {
+  background-color: var(--azul-inatel);
+  color: white;
+  font-size: 0.75rem;
+  padding: 6px 14px;
+  height: 34px;
+  text-transform: uppercase;
+  border-radius: 6px;
+}
+
+.btn-definir-tempo:hover { 
+  filter: brightness(1.2); 
+  box-shadow: 0 0 10px rgba(0, 93, 164, 0.4); 
+}
+
+.controles-cronometro { 
+  display: flex; 
+  justify-content: center; 
+  gap: 15px; 
+}
+
+.btn-cron { 
+  padding: 10px 24px; 
+  border-radius: 8px; 
+  font-size: 1rem; 
+  text-transform: uppercase; 
+  letter-spacing: 1px; 
+}
+
+.btn-cron:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  filter: brightness(0.7) grayscale(0.5);
+  transform: none !important;
+}
+
+.btn-start { 
+  background-color: var(--verde-arduino); 
+}
+
+.btn-start:hover:not(:disabled) { 
+  filter: brightness(1.2); 
+}
+
+.btn-pause { 
+  background-color: var(--laranja-start); 
+  color: #000; 
+}
+
+.btn-pause:hover:not(:disabled) { 
+  filter: brightness(1.2); 
+}
+
+.btn-reset { 
+  background-color: #555; 
+}
+
+.btn-reset:hover:not(:disabled) { 
+  background-color: #444; 
+}

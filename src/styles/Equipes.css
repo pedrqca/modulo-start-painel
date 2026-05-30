@@ -1,0 +1,226 @@
+.painel-equipes-controle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.add-equipe-form { 
+  display: flex; 
+  gap: 8px; 
+}
+
+input[type="text"] {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+input[type="text"]:focus { 
+  border-color: var(--cyber-ciano); 
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.2);
+}
+
+.btn-add { 
+  background-color: var(--azul-start); 
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-add:hover { 
+  filter: brightness(1.2); 
+}
+
+.btn-add:active {
+  transform: scale(0.98);
+}
+
+.info-ordenacao { 
+  color: var(--texto-secundario); 
+  font-size: 0.85rem; 
+}
+
+.wrapper-tabela {
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.25); 
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: 100%;
+  overflow-x: auto;
+}
+
+table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  font-size: 0.85rem; 
+  min-width: 1200px; 
+}
+
+th {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: var(--texto-secundario);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  padding: 14px 6px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+tr { 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+  transition: background-color 0.2s ease;
+}
+
+tr:hover { 
+  background-color: rgba(255, 255, 255, 0.02); 
+}
+
+td { 
+  padding: 12px 6px; 
+  vertical-align: middle; 
+}
+
+.col-rank { 
+  text-align: center; 
+  font-weight: bold; 
+  width: 60px; 
+}
+
+.col-nome { 
+  text-align: left; 
+  width: 220px; 
+}
+
+.col-total-pts { 
+  font-weight: 700; 
+  color: var(--cyber-ciano); 
+  text-align: center; 
+  width: 80px; 
+  font-size: 1.1rem;
+}
+
+.col-total-tempo { 
+  font-family: 'Share Tech Mono', monospace; 
+  text-align: center; 
+  width: 100px; 
+  color: var(--texto-secundario); 
+}
+
+.rank-1 { 
+  color: var(--ouro); 
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.3); 
+}
+
+.rank-2 { 
+  color: var(--prata); 
+}
+
+.rank-3 { 
+  color: var(--bronze); 
+}
+
+.nome-txt {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+  width: 85%;
+  display: inline-block;
+  transition: all 0.2s ease-in-out;
+}
+
+.nome-txt:focus { 
+  border-color: var(--cyber-ciano); 
+  outline: none; 
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.btn-del-equipe { 
+  background: transparent; 
+  color: var(--vermelho-erro); 
+  opacity: 0.4; 
+  padding: 0 5px; 
+  transition: opacity 0.2s ease-in-out, transform 0.1s ease;
+}
+
+.btn-del-equipe:hover { 
+  opacity: 1; 
+}
+
+.btn-del-equipe:active {
+  transform: scale(0.9);
+}
+
+.celula-exercicio { 
+  text-align: center; 
+  width: 95px; 
+}
+
+.container-exercicio {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 6px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  min-height: 58px; 
+  justify-content: center;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.container-exercicio.chamado { 
+  background-color: rgba(251, 192, 45, 0.12); 
+  border: 1px solid var(--laranja-start); 
+}
+
+.container-exercicio.validado { 
+  background-color: rgba(0, 135, 143, 0.15); 
+  border: 1px solid var(--verde-arduino); 
+}
+
+.timestamp-ex { 
+  font-family: 'Share Tech Mono', monospace; 
+  font-size: 0.75rem; 
+}
+
+.wrapper-acoes-ex { 
+  display: flex; 
+  gap: 3px; 
+  width: 100%; 
+}
+
+.btn-ex { 
+  height: 22px; 
+  padding: 0; 
+  border-radius: 4px; 
+  flex: 1; 
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-ex:hover {
+  filter: brightness(1.2);
+}
+
+.btn-ex:active {
+  transform: scale(0.93);
+}
+
+.btn-chamar { 
+  background-color: var(--azul-start); 
+}
+
+.btn-validar { 
+  background-color: var(--verde-arduino); 
+}
+
+.btn-apagar { 
+  background-color: #444; 
+}

@@ -1,0 +1,103 @@
+.warnings-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 25px;
+  width: 100%;
+}
+
+.warning-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-radius: 8px;
+  background: rgba(15, 16, 19, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  animation: surgindoAlert 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.warning-conteudo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.warning-texto {
+  flex: 1;
+  min-width: 0;
+}
+
+.warning-texto strong {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.warning-card.danger {
+  border-left: 5px solid var(--vermelho-erro);
+  box-shadow: inset 5px 0 15px rgba(211, 47, 47, 0.15), 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.warning-card.danger .warning-texto strong { 
+  color: #ff5252; 
+}
+
+.warning-card.alert {
+  border-left: 5px solid var(--laranja-start);
+  box-shadow: inset 5px 0 15px rgba(251, 192, 45, 0.1), 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.warning-card.alert .warning-texto strong { 
+  color: var(--laranja-start); 
+}
+
+.warning-card.info {
+  border-left: 5px solid var(--cyber-ciano);
+  box-shadow: inset 5px 0 15px rgba(0, 240, 255, 0.1), 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.warning-card.info .warning-texto strong { 
+  color: var(--cyber-ciano); 
+}
+
+.btn-close-warning {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.3);
+  padding: 6px;
+  font-size: 1rem;
+  line-height: 1;
+  border-radius: 4px;
+  transition: all 0.15s ease-in-out;
+  margin-left: 12px;
+}
+
+.btn-close-warning:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-close-warning:active {
+  transform: scale(0.9);
+}
+
+@keyframes surgindoAlert {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
