@@ -1,16 +1,39 @@
-# React + Vite
+# 🚀 Módulo Start - Painel de Controle & Ranking
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Dashboard interativo com estética Cyberpunk desenvolvido em **React + Vite** para gerenciamento de competições, controle de tempo e pontuação de equipes em tempo real.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 💻 Sobre o Projeto
 
-## React Compiler
+Este painel foi projetado para automatizar e otimizar a gestão de torneios e desafios educacionais. Ele elimina a necessidade de planilhas manuais complexas, oferecendo uma interface centralizada para coordenadores controlarem o cronômetro oficial, validarem missões e acompanharem o placar dinâmico do evento.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### ⚡ Principais Funcionalidades
 
-## Expanding the ESLint configuration
+- **⚙️ Interface de Navegação Dupla (Abas):** 
+  - **Aba Desafios:** Cadastro de equipes, customização do nome do evento/etapa e ajuste manual de pontuações de forma ágil.
+  - **Aba Cronômetro:** Visualização do placar geral com grid dinâmico contendo o progresso individual das equipes em 10 exercícios simultâneos.
+- **⏱️ Cronômetro Inteligente Otimizado:** Sistema de contagem regressiva contínuo que não sobrecarrega a renderização do navegador, com funções de iniciar, pausar, resetar e definir tempos customizados.
+- **🏆 Critério de Desempate Automatizado:** O ranking reordena as equipes em tempo real seguindo a regra oficial:
+  1. Maior pontuação total (soma dos pontos manuais e missões validadas).
+  2. Menor tempo total acumulado no cumprimento das missões (critério de velocidade).
+- **📥 Exportação de Relatórios (CSV):** Geração instantânea de um relatório formatado com o ranking final, pontuações parciais, tempos totais e carimbo de data/hora de cada exercício validado para abertura no Excel.
+- **💾 Persistência de Dados:** Integração nativa com `localStorage`, garantindo que nenhuma pontuação ou minuto do cronômetro seja perdido caso a página seja atualizada acidentalmente.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- **React.js** (Componentização, Hooks de Estado e Performance com `useMemo`)
+- **Vite** (Ferramental de build ultra-rápido)
+- **CSS3 Moderno** (Variáveis nativas para o tema Dark/Cyberpunk e Grid Layout)
+
+---
+
+## 🚀 Como Executar o Projeto Localmente
+
+Certifique-se de ter o [Node.js](https://nodejs.org/) instalado em sua máquina.
+
+1. **Clone o repositório:**
+```bash
+   git clone [https://github.com/pedrqca/modulo-start-painel.git](https://github.com/pedrqca/modulo-start-painel.git)
