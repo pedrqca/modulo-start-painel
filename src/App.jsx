@@ -278,7 +278,7 @@ export default function App() {
                   {Array.from({ length: 10 }).map((_, i) => (
                     <th key={i} className="celula-exercicio">EX{i + 1}</th>
                   ))}
-                  <th className="col-total-pts">Total Pts</th>
+                  <th className="col-total-pts">Pts Ex</th>
                   <th className="col-total-tempo">Tempo Total</th>
                 </tr>
               </thead>
@@ -308,7 +308,7 @@ export default function App() {
                         </td>
                       ))}
 
-                      <td className="col-total-pts">{totalPontos}</td>
+                      <td className="col-total-pts">{ptsEx}</td>
                       <td className="col-total-tempo">{formatarTempo(totalTempoGasto)}</td>
                     </tr>
                   );
@@ -360,7 +360,7 @@ export default function App() {
 
                 <div className="card-desafio-pontos">
                   <div className="label-pontos-card">
-                    Pontuação Atual
+                    Pontuação Desafios
                     <strong>{equipe.pontosManual || 0} pts</strong>
                   </div>
                   <div className="wrapper-botoes-pontos">
