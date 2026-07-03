@@ -1,0 +1,98 @@
+.telao-fundo {
+  background-color: #030512;
+  color: #ffffff;
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow: hidden;
+}
+
+.telao-alinhamento {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 90%;
+}
+
+.telao-top-tag {
+  font-size: 1.2rem;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 10px;
+}
+
+.telao-header-txt {
+  font-size: 3rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #f4f4f5;
+  margin: 0;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.telao-timer-txt {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 18vw;
+  font-weight: 700;
+  line-height: 1;
+  margin: 4vh 0;
+  font-variant-numeric: tabular-nums;
+  transition: all 0.3s ease-in-out;
+}
+
+.telao-timer-txt.neon-ativo {
+  color: #00f0ff;
+  text-shadow: 0 0 50px rgba(0, 240, 255, 0.4);
+}
+
+.telao-timer-txt.neon-pausado {
+  color: #fbc02d;
+  text-shadow: 0 0 50px rgba(252, 192, 45, 0.25);
+}
+
+.telao-badge-status {
+  margin-top: 10px;
+}
+
+.badge-indicator {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 8px 24px;
+  border-radius: 30px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.badge-indicator.cor-run {
+  color: #00f0ff;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+}
+
+.badge-indicator.cor-stop {
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.telao-btn-fs {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  padding: 8px 16px;
+  border-radius: 6px;
+  z-index: 10;
+}
+
+.telao-btn-fs:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
