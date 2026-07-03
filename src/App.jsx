@@ -76,6 +76,11 @@ export default function App() {
     localStorage.setItem("equipes", JSON.stringify(equipes));
   }, [equipes]);
 
+  // Sincroniza a aba ativa para o telão saber o que renderizar
+  useEffect(() => {
+    localStorage.setItem("abaAtiva", abaAtiva);
+  }, [abaAtiva]);
+
   // Sincronização do Cronômetro Geral
   useEffect(() => { localStorage.setItem("tempoRestante", tempoRestante.toString()); }, [tempoRestante]);
   useEffect(() => { localStorage.setItem("tempoDefinido", tempoDefinido.toString()); }, [tempoDefinido]);
@@ -271,23 +276,23 @@ export default function App() {
         <button className={`btn-aba ${abaAtiva === "cronometro" ? "active" : ""}`} onClick={() => setAbaAtiva("cronometro")}>⏱️ Cronômetro</button>
       </div>
 
-      <div className="banner-evento-atual" style={{
-        textAlign: "center", margin: "-5px 0 25px 0", padding: "10px 15px",
-        background: "rgba(0, 93, 164, 0.1)", border: "1px dashed var(--cyber-ciano, #00f0ff)",
-        borderRadius: "8px", textTransform: "uppercase", letterSpacing: "1px", fontSize: "0.9rem"
-      }}>
-        <span style={{ color: "var(--texto-secundario)" }}>📍 ESCOLA: </span>
-        <strong style={{ color: "#fff", textShadow: "0 0 8px rgba(0, 240, 255, 0.4)" }}>{tituloEvento}</strong>
+      {/* Seção unificada de controle do Telão e Banner do Evento */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "25px", gap: "15px", flexWrap: "wrap" }}>
+        <div className="banner-evento-atual" style={{
+          margin: 0, padding: "10px 15px", flex: 1, textAlign: "left",
+          background: "rgba(0, 93, 164, 0.1)", border: "1px dashed var(--cyber-ciano, #00f0ff)",
+          borderRadius: "8px", textTransform: "uppercase", letterSpacing: "1px", fontSize: "0.9rem"
+        }}>
+          <span style={{ color: "var(--texto-secundario)" }}>📍 ESCOLA: </span>
+          <strong style={{ color: "#fff", textShadow: "0 0 8px rgba(0, 240, 255, 0.4)" }}>{tituloEvento}</strong>
+        </div>
+        <button className="btn-util" onClick={abrirAbaTelan} style={{ border: "1px solid var(--cyber-ciano)", color: "var(--cyber-ciano)", height: "38px" }}>
+          🖥️ Abrir Aba do Telão Exterior
+        </button>
       </div>
 
       {abaAtiva === "cronometro" ? (
         <>
-          <div style={{ textAlign: "right", marginBottom: "15px" }}>
-            <button className="btn-util" onClick={abrirAbaTelan} style={{ border: "1px solid var(--cyber-ciano)", color: "var(--cyber-ciano)" }}>
-              🖥️ Abrir Aba do Telão Exterior
-            </button>
-          </div>
-
           <Temporizador
             tempoRestante={tempoRestante} timerAtivo={timerAtivo}
             inputHoras={inputHoras} setInputHoras={setInputHoras}
@@ -340,7 +345,7 @@ export default function App() {
       ) : (
         <>
           {/* ======================================================= */}
-          {/* NOVO BLCO DE TEMPORIZADOR EXCLUSIVO DA ABA DE DESAFIOS */}
+          {/* BLCO DE TEMPORIZADOR EXCLUSIVO DA ABA DE DESAFIOS       */}
           {/* ======================================================= */}
           <div className="painel-cronometro" style={{ marginBottom: "30px", border: "1px dashed var(--laranja-start, #fbc02d)" }}>
             <div style={{ fontSize: "0.85rem", textTransform: "uppercase", color: "var(--laranja-start)", letterSpacing: "1px", marginBottom: "5px" }}>
