@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Header from "./components/Header";
 import Temporizador from "./components/Temporizador";
+import Timer from "./pages/Timer";
 
 const formatarTempo = (segundosTotais) => {
   const hrs = Math.floor(segundosTotais / 3600).toString().padStart(2, "0");
@@ -167,9 +168,9 @@ export default function App() {
     setTimerDesafiosAtivo(false);
   };
 
-  const abrirAbaTelan = () => {
-    window.open("/timer?fullscreen=true", "_blank", "noopener,noreferrer");
-  };
+    const abrirAbaTelan = () => {
+  window.open("?telao=true", "_blank", "noopener,noreferrer");
+};
 
   // ==========================================
   // GERENCIAMENTO DAS EQUIPES
