@@ -241,7 +241,6 @@ export default function App() {
       let tempoGastoSeg = 0;
 
       if (novoStatus === "validado") {
-        // Captura o tempo correto dependendo de qual aba está ativa
         const atualTempoDefinido = abaAtiva === "cronometro" ? tempoDefinido : tempoDefinidoDesafios;
         const atualTempoRestante = abaAtiva === "cronometro" ? tempoRestante : tempoRestanteDesafios;
         
@@ -258,10 +257,11 @@ export default function App() {
     }));
   };
 
+  // ALTERAÇÃO: Removido o 'pontosManual' da soma da pontuação de classificação
   const equipesOrdenadas = useMemo(() => {
     return [...equipes].sort((a, b) => {
-      const ptsA = (a.pontosManual || 0) + a.exercicios.filter((e) => e.status === "validado").length;
-      const ptsB = (b.pontosManual || 0) + b.exercicios.filter((e) => e.status === "validado").length;
+      const ptsA = a.exercicios.filter((e) => e.status === "validado").length;
+      const ptsB = b.exercicios.filter((e) => e.status === "validado").length;
 
       if (ptsB !== ptsA) return ptsB - ptsA;
 
@@ -284,6 +284,7 @@ export default function App() {
     setModalResetAberto(false);
   };
 
+  // ALTERAÇÃO: Separado de forma limpa as colunas no CSV sem unificar "Pontuação Total" confusa
   const exportarCSV = () => {
     if (equipes.length === 0) {
       setModalAvisoVazioAberto(true);
@@ -291,17 +292,16 @@ export default function App() {
     }
 
     let csv = `COMPETIÇÃO / LOCAL:;${tituloEvento};;;;;\n\n`;
-    csv += "Rank;Equipe;Desafios;Missoes;Pontuação Total;Tempo Total Gasto;";
+    csv += "Rank;Equipe;Pts Desafios;Pts Missoes;Tempo Total Gasto;";
     
     for (let i = 1; i <= 10; i++) { csv += `EX ${i};`; }
     csv += "\n";
 
     equipesOrdenadas.forEach((eq, idx) => {
       const ptsEx = eq.exercicios.filter((e) => e.status === "validado").length;
-      const totalPts = (eq.pontosManual || 0) + ptsEx;
       const tempoTotal = eq.exercicios.reduce((acc, e) => acc + (e.tempoGastoSeg || 0), 0);
       
-      csv += `${idx + 1};${eq.nome};${eq.pontosManual || 0};${ptsEx};${totalPts};${formatarTempo(tempoTotal)};`;
+      csv += `${idx + 1};${eq.nome};${eq.pontosManual || 0};${ptsEx};${formatarTempo(tempoTotal)};`;
       
       eq.exercicios.forEach((ex) => {
         if (ex.status === "validado") { csv += `Validado (${ex.tempoEx});`; } 
