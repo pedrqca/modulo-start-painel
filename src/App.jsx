@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Header from "./components/Header";
 import Temporizador from "./components/Temporizador";
-import Timer from "./pages/Timer";
+import Timer from "./pages/Timer"; // Importado para interceção de rota segura e evitar erro 404
 
 const formatarTempo = (segundosTotais) => {
   const hrs = Math.floor(segundosTotais / 3600).toString().padStart(2, "0");
@@ -77,7 +77,7 @@ export default function App() {
     localStorage.setItem("equipes", JSON.stringify(equipes));
   }, [equipes]);
 
-  // Sincroniza a aba ativa para o telão saber o que renderizar
+  // Sincroniza a aba ativa no localStorage para o telão saber o que renderizar
   useEffect(() => {
     localStorage.setItem("abaAtiva", abaAtiva);
   }, [abaAtiva]);
@@ -128,7 +128,7 @@ export default function App() {
     return () => clearInterval(intervalo);
   }, [timerDesafiosAtivo]);
 
-  // Sincronização entre abas/janelas abertas externa
+  // Sincronização entre abas/janelas abertas externamente
   useEffect(() => {
     const sincronizarTabs = (e) => {
       if (e.key === "tempoRestante") setTempoRestante(Number(e.newValue));
@@ -168,9 +168,10 @@ export default function App() {
     setTimerDesafiosAtivo(false);
   };
 
-    const abrirAbaTelan = () => {
-  window.open("?telao=true", "_blank", "noopener,noreferrer");
-};
+  // Alterado para Query String (?telao=true) para contornar o erro 404 no GitHub Pages
+  const abrirAbaTelan = () => {
+    window.open("?telao=true", "_blank", "noopener,noreferrer");
+  };
 
   // ==========================================
   // GERENCIAMENTO DAS EQUIPES
@@ -268,6 +269,17 @@ export default function App() {
     link.click();
   };
 
+  // =======================================================
+  // INTERCEPTADOR DO TELÃO EXTERNO (SOLUÇÃO DE PRODUTO)
+  // =======================================================
+  const urlParams = new URLSearchParams(window.location.search);
+  const ehTelao = urlParams.get("telao") === "true";
+
+  // Se detetar '?telao=true' na URL, renderiza isoladamente a página do telão
+  if (ehTelao) {
+    return <Timer />;
+  }
+
   return (
     <div className="container">
       <Header exportarCSV={exportarCSV} zerarCompeticao={zerarCompeticao} />
@@ -277,7 +289,7 @@ export default function App() {
         <button className={`btn-aba ${abaAtiva === "cronometro" ? "active" : ""}`} onClick={() => setAbaAtiva("cronometro")}>⏱️ Cronômetro</button>
       </div>
 
-      {/* Seção unificada de controle do Telão e Banner do Evento */}
+      {/* Bloco fixo do Topo: Banner do Evento e Botão do Telão Global */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "25px", gap: "15px", flexWrap: "wrap" }}>
         <div className="banner-evento-atual" style={{
           margin: 0, padding: "10px 15px", flex: 1, textAlign: "left",
@@ -346,7 +358,7 @@ export default function App() {
       ) : (
         <>
           {/* ======================================================= */}
-          {/* BLCO DE TEMPORIZADOR EXCLUSIVO DA ABA DE DESAFIOS       */}
+          {/* BLOCO DE TEMPORIZADOR EXCLUSIVO DA ABA DE DESAFIOS      */}
           {/* ======================================================= */}
           <div className="painel-cronometro" style={{ marginBottom: "30px", border: "1px dashed var(--laranja-start, #fbc02d)" }}>
             <div style={{ fontSize: "0.85rem", textTransform: "uppercase", color: "var(--laranja-start)", letterSpacing: "1px", marginBottom: "5px" }}>
