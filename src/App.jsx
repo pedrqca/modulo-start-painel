@@ -241,8 +241,12 @@ export default function App() {
       let tempoGastoSeg = 0;
 
       if (novoStatus === "validado") {
-        tempoGastoSeg = tempoDefinido - tempoRestante;
-        tempoEx = formatarTempo(tempoRestante);
+        // Captura o tempo correto dependendo de qual aba está ativa
+        const atualTempoDefinido = abaAtiva === "cronometro" ? tempoDefinido : tempoDefinidoDesafios;
+        const atualTempoRestante = abaAtiva === "cronometro" ? tempoRestante : tempoRestanteDesafios;
+        
+        tempoGastoSeg = atualTempoDefinido - atualTempoRestante;
+        tempoEx = formatarTempo(atualTempoRestante);
       } else if (novoStatus === "chamado") {
         tempoEx = "CHAMADO";
       } else {
@@ -261,8 +265,8 @@ export default function App() {
 
       if (ptsB !== ptsA) return ptsB - ptsA;
 
-      const tempoA = a.exercicios.reduce((acc, e) => acc + e.tempoGastoSeg, 0);
-      const tempoB = b.exercicios.reduce((acc, e) => acc + e.tempoGastoSeg, 0);
+      const tempoA = a.exercicios.reduce((acc, e) => acc + (e.tempoGastoSeg || 0), 0);
+      const tempoB = b.exercicios.reduce((acc, e) => acc + (e.tempoGastoSeg || 0), 0);
       return tempoA - tempoB;
     });
   }, [equipes]);
@@ -295,7 +299,7 @@ export default function App() {
     equipesOrdenadas.forEach((eq, idx) => {
       const ptsEx = eq.exercicios.filter((e) => e.status === "validado").length;
       const totalPts = (eq.pontosManual || 0) + ptsEx;
-      const tempoTotal = eq.exercicios.reduce((acc, e) => acc + e.tempoGastoSeg, 0);
+      const tempoTotal = eq.exercicios.reduce((acc, e) => acc + (e.tempoGastoSeg || 0), 0);
       
       csv += `${idx + 1};${eq.nome};${eq.pontosManual || 0};${ptsEx};${totalPts};${formatarTempo(tempoTotal)};`;
       
@@ -362,14 +366,12 @@ export default function App() {
       
       {abaAtiva === "cronometro" ? (
         <>
-          {/* BOTÃO EXCLUSIVO DO TELÃO DE MISSÕES NA ABA DE MISSÕES */}
           <div style={{ textAlign: "right", marginBottom: "15px" }}>
             <button className="btn-util" onClick={() => window.open("?telao=missoes", "_blank")} style={{ border: "1px solid #00f0ff", fontWeight: "bold" }}>
               🖥️ Abrir Telão de Missões
             </button>
           </div>
 
-          {/* CRONÓMETRO ANTIGO (ORIGINAL) DE MISSÕES */}
           <Temporizador
             tempoRestante={tempoRestante}
             timerAtivo={timerAtivo}
@@ -400,7 +402,7 @@ export default function App() {
               <tbody>
                 {equipesOrdenadas.map((equipe, index) => {
                   const ptsEx = equipe.exercicios.filter((e) => e.status === "validado").length;
-                  const totalTempoGasto = equipe.exercicios.reduce((acc, e) => acc + e.tempoGastoSeg, 0);
+                  const totalTempoGasto = equipe.exercicios.reduce((acc, e) => acc + (e.tempoGastoSeg || 0), 0);
 
                   return (
                     <tr key={equipe.id}>
@@ -433,14 +435,12 @@ export default function App() {
         </>
       ) : (
         <>
-          {/* BOTÃO EXCLUSIVO DO TELÃO DE DESAFIOS NA ABA DE DESAFIOS */}
           <div style={{ textAlign: "right", marginBottom: "15px" }}>
             <button className="btn-util" onClick={() => window.open("?telao=desafios", "_blank")} style={{ border: "1px solid #00f0ff", fontWeight: "bold" }}>
               🖥️ Abrir Telão de Desafios
             </button>
           </div>
 
-          {/* MESMO COMPONENTE DE CRONÓMETRO REUTILIZADO PARA OS DESAFIOS */}
           <Temporizador
             tempoRestante={tempoRestanteDesafios}
             timerAtivo={timerDesafiosAtivo}
@@ -510,7 +510,6 @@ export default function App() {
         </>
       )}
 
-      {/* MODAIS MANTIDOS SEM ALTERAÇÕES */}
       {modalResetAberto && (
         <div className="modal-overlay">
           <div className="modal-card critical-danger">
