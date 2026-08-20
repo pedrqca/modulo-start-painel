@@ -10,9 +10,68 @@ const formatarTempo = (segundosTotais) => {
   return `${hrs}:${min}:${seg}`;
 };
 
+// =======================================================
+// TELÃO 1: CRONÔMETRO DE MISSÕES (PASSIVO)
+// =======================================================
+function TelaoMissoes({ formatarTempo }) {
+  const [tempo, setTempo] = useState(() => Number(localStorage.getItem("tempoRestante")) || 0);
+  const [titulo, setTitulo] = useState(() => localStorage.getItem("tituloEvento") || "Módulo Start");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTempo(Number(localStorage.getItem("tempoRestante")) || 0);
+      setTitulo(localStorage.getItem("tituloEvento") || "Módulo Start");
+    }, 200);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="telao-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0a0f24', padding: '20px', textAlign: 'center' }}>
+      <h2 style={{ textTransform: 'uppercase', color: 'var(--cyber-ciano, #00f0ff)', letterSpacing: '3px', marginBottom: '10px', fontWeight: 'bold' }}>⏱️ CRONÔMETRO GERAL DE MISSÕES ⏱️</h2>
+      <h3 style={{ color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', marginBottom: '40px' }}>{titulo}</h3>
+      <div className="painel-cronometro">
+        <div className="display-tempo" style={{ fontSize: '12rem', lineHeight: '1' }}>
+          {formatarTempo(tempo)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =======================================================
+// TELÃO 2: TEMPORIZADOR DE DESAFIOS (PASSIVO)
+// =======================================================
+function TelaoDesafios({ formatarTempo }) {
+  const [tempo, setTempo] = useState(() => Number(localStorage.getItem("tempoRestanteDesafios")) || 0);
+  const [titulo, setTitulo] = useState(() => localStorage.getItem("tituloEvento") || "Módulo Start");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTempo(Number(localStorage.getItem("tempoRestanteDesafios")) || 0);
+      setTitulo(localStorage.getItem("tituloEvento") || "Módulo Start");
+    }, 200);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="telao-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#050a30', padding: '20px', textAlign: 'center' }}>
+      <h2 style={{ textTransform: 'uppercase', color: 'var(--cyber-ciano, #00f0ff)', letterSpacing: '3px', marginBottom: '10px', fontWeight: 'bold' }}>🚀 DESAFIO EM ANDAMENTO 🚀</h2>
+      <h3 style={{ color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', marginBottom: '40px' }}>{titulo}</h3>
+      <div className="painel-cronometro">
+        <div className="display-tempo" style={{ fontSize: '12rem', lineHeight: '1' }}>
+          {formatarTempo(tempo)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [abaAtiva, setAbaAtiva] = useState("desafios"); 
 
+  // ==========================================
+  // ESTADOS DO CRONÔMETRO DE MISSÕES
+  // ==========================================
   const [tituloEvento, setTituloEvento] = useState(() => {
     const salvo = localStorage.getItem("tituloEvento");
     return salvo ? salvo : "Módulo Start - Escola Padrão";
@@ -32,6 +91,24 @@ export default function App() {
   const [inputMinutos, setInputMinutos] = useState(0);
   const [timerAtivo, setTimerAtivo] = useState(false);
 
+  // ==========================================
+  // ESTADOS DO TEMPORIZADOR DE DESAFIOS
+  // ==========================================
+  const [tempoRestanteDesafios, setTempoRestanteDesafios] = useState(() => {
+    const salvo = localStorage.getItem("tempoRestanteDesafios");
+    return salvo ? Number(salvo) : 300;
+  });
+  const [tempoDefinidoDesafios, setTempoDefinidoDesafios] = useState(() => {
+    const salvo = localStorage.getItem("tempoDefinidoDesafios");
+    return salvo ? Number(salvo) : 300;
+  });
+  const [inputHorasDesafios, setInputHorasDesafios] = useState(0);
+  const [inputMinutosDesafios, setInputMinutosDesafios] = useState(5);
+  const [timerDesafiosAtivo, setTimerDesafiosAtivo] = useState(false);
+
+  // ==========================================
+  // ESTADOS DE EQUIPES E MODAIS
+  // ==========================================
   const [equipes, setEquipes] = useState(() => {
     const salvas = localStorage.getItem("equipes");
     return salvas ? JSON.parse(salvas) : [];
@@ -41,25 +118,21 @@ export default function App() {
   const [modalResetAberto, setModalResetAberto] = useState(false);
   const [modalAvisoVazioAberto, setModalAvisoVazioAberto] = useState(false);
 
-  useEffect(() => {
-    localStorage.setItem("tituloEvento", tituloEvento);
-  }, [tituloEvento]);
+  // ==========================================
+  // PERSISTÊNCIA DOS DADOS (LOCALSTORAGE)
+  // ==========================================
+  useEffect(() => { localStorage.setItem("tituloEvento", tituloEvento); }, [tituloEvento]);
+  useEffect(() => { localStorage.setItem("equipes", JSON.stringify(equipes)); }, [equipes]);
+  useEffect(() => { localStorage.setItem("tempoRestante", tempoRestante); }, [tempoRestante]);
+  useEffect(() => { localStorage.setItem("tempoDefinido", tempoDefinido); }, [tempoDefinido]);
+  useEffect(() => { localStorage.setItem("tempoRestanteDesafios", tempoRestanteDesafios); }, [tempoRestanteDesafios]);
+  useEffect(() => { localStorage.setItem("tempoDefinidoDesafios", tempoDefinidoDesafios); }, [tempoDefinidoDesafios]);
 
-  useEffect(() => {
-    localStorage.setItem("equipes", JSON.stringify(equipes));
-  }, [equipes]);
-
-  useEffect(() => {
-    localStorage.setItem("tempoRestante", tempoRestante);
-  }, [tempoRestante]);
-
-  useEffect(() => {
-    localStorage.setItem("tempoDefinido", tempoDefinido);
-  }, [tempoDefinido]);
-
+  // ==========================================
+  // CONTAGEM REGRESSIVA - MISSÕES
+  // ==========================================
   useEffect(() => {
     if (!timerAtivo) return;
-
     const intervalo = setInterval(() => {
       setTempoRestante((prev) => {
         if (prev <= 1) {
@@ -70,20 +143,33 @@ export default function App() {
         return prev - 1;
       });
     }, 1000);
-
     return () => clearInterval(intervalo);
   }, [timerAtivo]);
 
-  const iniciarTimer = () => { 
-    if (tempoRestante > 0) setTimerAtivo(true); 
-  };
+  // ==========================================
+  // CONTAGEM REGRESSIVA - DESAFIOS
+  // ==========================================
+  useEffect(() => {
+    if (!timerDesafiosAtivo) return;
+    const intervalo = setInterval(() => {
+      setTempoRestanteDesafios((prev) => {
+        if (prev <= 1) {
+          setTimerDesafiosAtivo(false);
+          clearInterval(intervalo);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(intervalo);
+  }, [timerDesafiosAtivo]);
 
+  // ==========================================
+  // FUNÇÕES DE CONTROLE - MISSÕES
+  // ==========================================
+  const iniciarTimer = () => { if (tempoRestante > 0) setTimerAtivo(true); };
   const pausarTimer = () => setTimerAtivo(false);
-
-  const resetarTimer = () => { 
-    setTimerAtivo(false); 
-    setTempoRestante(tempoDefinido); 
-  };
+  const resetarTimer = () => { setTimerAtivo(false); setTempoRestante(tempoDefinido); };
   
   const atualizarTempoInicial = () => {
     const segundosTotais = (Math.max(0, inputHoras) * 3600) + (Math.max(0, inputMinutos) * 60);
@@ -93,6 +179,24 @@ export default function App() {
     setTimerAtivo(false);
   };
 
+  // ==========================================
+  // FUNÇÕES DE CONTROLE - DESAFIOS
+  // ==========================================
+  const iniciarTimerDesafios = () => { if (tempoRestanteDesafios > 0) setTimerDesafiosAtivo(true); };
+  const pausarTimerDesafios = () => setTimerDesafiosAtivo(false);
+  const resetarTimerDesafios = () => { setTimerDesafiosAtivo(false); setTempoRestanteDesafios(tempoDefinidoDesafios); };
+  
+  const atualizarTempoInicialDesafios = () => {
+    const segundosTotais = (Math.max(0, inputHorasDesafios) * 3600) + (Math.max(0, inputMinutosDesafios) * 60);
+    const tempoFinal = segundosTotais > 0 ? segundosTotais : 60; 
+    setTempoDefinidoDesafios(tempoFinal);
+    setTempoRestanteDesafios(tempoFinal);
+    setTimerDesafiosAtivo(false);
+  };
+
+  // ==========================================
+  // GERENCIAMENTO DE EQUIPES E COMPOSIÇÃO
+  // ==========================================
   const adicionarEquipe = (e) => {
     e.preventDefault();
     if (!novoNomeEquipe.trim()) return;
@@ -137,8 +241,11 @@ export default function App() {
       let tempoGastoSeg = 0;
 
       if (novoStatus === "validado") {
-        tempoGastoSeg = tempoDefinido - tempoRestante;
-        tempoEx = formatarTempo(tempoRestante);
+        const atualTempoDefinido = abaAtiva === "cronometro" ? tempoDefinido : tempoDefinidoDesafios;
+        const atualTempoRestante = abaAtiva === "cronometro" ? tempoRestante : tempoRestanteDesafios;
+        
+        tempoGastoSeg = atualTempoDefinido - atualTempoRestante;
+        tempoEx = formatarTempo(atualTempoRestante);
       } else if (novoStatus === "chamado") {
         tempoEx = "CHAMADO";
       } else {
@@ -150,31 +257,34 @@ export default function App() {
     }));
   };
 
+  // ALTERAÇÃO: Removido o 'pontosManual' da soma da pontuação de classificação
   const equipesOrdenadas = useMemo(() => {
     return [...equipes].sort((a, b) => {
-      const ptsA = (a.pontosManual || 0) + a.exercicios.filter((e) => e.status === "validado").length;
-      const ptsB = (b.pontosManual || 0) + b.exercicios.filter((e) => e.status === "validado").length;
+      const ptsA = a.exercicios.filter((e) => e.status === "validado").length;
+      const ptsB = b.exercicios.filter((e) => e.status === "validado").length;
 
       if (ptsB !== ptsA) return ptsB - ptsA;
 
-      const tempoA = a.exercicios.reduce((acc, e) => acc + e.tempoGastoSeg, 0);
-      const tempoB = b.exercicios.reduce((acc, e) => acc + e.tempoGastoSeg, 0);
+      const tempoA = a.exercicios.reduce((acc, e) => acc + (e.tempoGastoSeg || 0), 0);
+      const tempoB = b.exercicios.reduce((acc, e) => acc + (e.tempoGastoSeg || 0), 0);
       return tempoA - tempoB;
     });
   }, [equipes]);
 
-  const zerarCompeticao = () => {
-    setModalResetAberto(true);
-  };
+  const zerarCompeticao = () => { setModalResetAberto(true); };
 
   const confirmarZerarCompeticao = () => {
     setEquipes([]);
     setTempoRestante(3600);
     setTempoDefinido(3600);
+    setTempoRestanteDesafios(300);
+    setTempoDefinidoDesafios(300);
     setTimerAtivo(false);
+    setTimerDesafiosAtivo(false);
     setModalResetAberto(false);
   };
 
+  // ALTERAÇÃO: Separado de forma limpa as colunas no CSV sem unificar "Pontuação Total" confusa
   const exportarCSV = () => {
     if (equipes.length === 0) {
       setModalAvisoVazioAberto(true);
@@ -182,30 +292,22 @@ export default function App() {
     }
 
     let csv = `COMPETIÇÃO / LOCAL:;${tituloEvento};;;;;\n\n`;
-    csv += "Rank;Equipe;Desafios;Missoes;Pontuação Total;Tempo Total Gasto;";
+    csv += "Rank;Equipe;Pts Desafios;Pts Missoes;Tempo Total Gasto;";
     
-    for (let i = 1; i <= 10; i++) {
-      csv += `EX ${i};`;
-    }
+    for (let i = 1; i <= 10; i++) { csv += `EX ${i};`; }
     csv += "\n";
 
     equipesOrdenadas.forEach((eq, idx) => {
       const ptsEx = eq.exercicios.filter((e) => e.status === "validado").length;
-      const totalPts = (eq.pontosManual || 0) + ptsEx;
-      const tempoTotal = eq.exercicios.reduce((acc, e) => acc + e.tempoGastoSeg, 0);
+      const tempoTotal = eq.exercicios.reduce((acc, e) => acc + (e.tempoGastoSeg || 0), 0);
       
-      csv += `${idx + 1};${eq.nome};${eq.pontosManual || 0};${ptsEx};${totalPts};${formatarTempo(tempoTotal)};`;
+      csv += `${idx + 1};${eq.nome};${eq.pontosManual || 0};${ptsEx};${formatarTempo(tempoTotal)};`;
       
       eq.exercicios.forEach((ex) => {
-        if (ex.status === "validado") {
-          csv += `Validado (${ex.tempoEx});`;
-        } else if (ex.status === "chamado") {
-          csv += "Chamado;";
-        } else {
-          csv += "---;";
-        }
+        if (ex.status === "validado") { csv += `Validado (${ex.tempoEx});`; } 
+        else if (ex.status === "chamado") { csv += "Chamado;"; } 
+        else { csv += "---;"; }
       });
-      
       csv += "\n";
     });
 
@@ -218,6 +320,15 @@ export default function App() {
     link.click();
     document.body.removeChild(link);
   };
+
+  // =======================================================
+  // INTERCEPTADOR DE URL: RENDERIZA O TELÃO REQUISITADO
+  // =======================================================
+  const urlParams = new URLSearchParams(window.location.search);
+  const tipoTelao = urlParams.get("telao");
+
+  if (tipoTelao === "missoes") { return <TelaoMissoes formatarTempo={formatarTempo} />; }
+  if (tipoTelao === "desafios") { return <TelaoDesafios formatarTempo={formatarTempo} />; }
 
   return (
     <div className="container">
@@ -255,6 +366,12 @@ export default function App() {
       
       {abaAtiva === "cronometro" ? (
         <>
+          <div style={{ textAlign: "right", marginBottom: "15px" }}>
+            <button className="btn-util" onClick={() => window.open("?telao=missoes", "_blank")} style={{ border: "1px solid #00f0ff", fontWeight: "bold" }}>
+              🖥️ Abrir Telão de Missões
+            </button>
+          </div>
+
           <Temporizador
             tempoRestante={tempoRestante}
             timerAtivo={timerAtivo}
@@ -278,15 +395,14 @@ export default function App() {
                   {Array.from({ length: 10 }).map((_, i) => (
                     <th key={i} className="celula-exercicio">EX{i + 1}</th>
                   ))}
-                  <th className="col-total-pts">Total Pts</th>
+                  <th className="col-total-pts">Pts Ex</th>
                   <th className="col-total-tempo">Tempo Total</th>
                 </tr>
               </thead>
               <tbody>
                 {equipesOrdenadas.map((equipe, index) => {
                   const ptsEx = equipe.exercicios.filter((e) => e.status === "validado").length;
-                  const totalPontos = (equipe.pontosManual || 0) + ptsEx;
-                  const totalTempoGasto = equipe.exercicios.reduce((acc, e) => acc + e.tempoGastoSeg, 0);
+                  const totalTempoGasto = equipe.exercicios.reduce((acc, e) => acc + (e.tempoGastoSeg || 0), 0);
 
                   return (
                     <tr key={equipe.id}>
@@ -308,7 +424,7 @@ export default function App() {
                         </td>
                       ))}
 
-                      <td className="col-total-pts">{totalPontos}</td>
+                      <td className="col-total-pts">{ptsEx}</td>
                       <td className="col-total-tempo">{formatarTempo(totalTempoGasto)}</td>
                     </tr>
                   );
@@ -319,7 +435,27 @@ export default function App() {
         </>
       ) : (
         <>
-          <div className="secao-cadastro-desafios">
+          <div style={{ textAlign: "right", marginBottom: "15px" }}>
+            <button className="btn-util" onClick={() => window.open("?telao=desafios", "_blank")} style={{ border: "1px solid #00f0ff", fontWeight: "bold" }}>
+              🖥️ Abrir Telão de Desafios
+            </button>
+          </div>
+
+          <Temporizador
+            tempoRestante={tempoRestanteDesafios}
+            timerAtivo={timerDesafiosAtivo}
+            inputHoras={inputHorasDesafios}
+            setInputHoras={setInputHorasDesafios}
+            inputMinutos={inputMinutosDesafios}
+            setInputMinutos={setInputMinutosDesafios}
+            iniciarTimer={iniciarTimerDesafios}
+            pausarTimer={pausarTimerDesafios}
+            resetarTimer={resetarTimerDesafios}
+            atualizarTempoInicial={atualizarTempoInicialDesafios}
+            formatarTempo={formatarTempo}
+          />
+
+          <div className="secao-cadastro-desafios" style={{ marginTop: "20px" }}>
             <div className="config-titulo-evento" style={{ marginBottom: "25px", paddingBottom: "20px", borderBottom: "1px solid rgba(255, 255, 255, 0.08)" }}>
               <label style={{ display: "block", fontSize: "0.8rem", color: "var(--texto-secundario)", textTransform: "uppercase", marginBottom: "8px", letterSpacing: "0.5px" }}>
                 🏫 Nome da Escola / Etapa do Evento
@@ -358,9 +494,9 @@ export default function App() {
                   <button className="btn-del-equipe" onClick={() => deletarEquipe(equipe.id)}>✕</button>
                 </div>
 
-                <div className="card-desafio-pontos">
+                <div className="card-desafio-points">
                   <div className="label-pontos-card">
-                    Pontuação Atual
+                    Pontuação Desafios
                     <strong>{equipe.pontosManual || 0} pts</strong>
                   </div>
                   <div className="wrapper-botoes-pontos">
@@ -382,7 +518,7 @@ export default function App() {
               <h2 className="modal-title">Apagar Todos os Dados?</h2>
             </div>
             <div className="modal-body">
-              Tem certeza que deseja resetar a tabela? Isso apagará o progresso, as notas e os tempos de <strong style={{ color: "#fff" }}>todas as equipes</strong> de ambas as abas permanentemente. Essa ação não pode ser desfeita.
+              Tem certeza que deseja resetar a tabela? Isso apagará o progresso, as notas e os tempos de <strong style={{ color: "#fff" }}>todas as equipes</strong> de ambas as abas permanentemente.
             </div>
             <div className="modal-footer">
               <button className="btn-util" onClick={() => setModalResetAberto(false)}>Cancelar</button>
@@ -400,7 +536,7 @@ export default function App() {
               <h2 className="modal-title">Exportação Inválida</h2>
             </div>
             <div className="modal-body">
-              Não foi possível gerar o relatório. A tabela está atualmente <strong style={{ color: "#fff" }}>vazia</strong>. Adicione pelo menos uma equipe na aba Desafios antes de tentar exportar o arquivo CSV.
+              Não foi possível gerar o relatório. A tabela está atualmente <strong style={{ color: "#fff" }}>vazia</strong>.
             </div>
             <div className="modal-footer">
               <button className="btn-util" style={{ backgroundColor: "var(--azul-start)" }} onClick={() => setModalAvisoVazioAberto(false)}>Entendido</button>
