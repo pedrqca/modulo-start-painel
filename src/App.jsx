@@ -3,6 +3,14 @@ import "./App.css";
 import Header from "./components/Header";
 import Temporizador from "./components/Temporizador";
 
+const TOTAL_MISSOES = 12;
+
+const criarExercicio = () => ({
+  status: "default",
+  tempoEx: "",
+  tempoGastoSeg: 0
+});
+
 const formatarTempo = (segundosTotais) => {
   const hrs = Math.floor(segundosTotais / 3600).toString().padStart(2, "0");
   const min = Math.floor((segundosTotais % 3600) / 60).toString().padStart(2, "0");
@@ -111,7 +119,18 @@ export default function App() {
   // ==========================================
   const [equipes, setEquipes] = useState(() => {
     const salvas = localStorage.getItem("equipes");
-    return salvas ? JSON.parse(salvas) : [];
+    if (!salvas) return [];
+
+    return JSON.parse(salvas).map((equipe) => ({
+      ...equipe,
+      exercicios: [
+        ...(equipe.exercicios || []),
+        ...Array.from(
+          { length: Math.max(0, TOTAL_MISSOES - (equipe.exercicios || []).length) },
+          criarExercicio
+        )
+      ].slice(0, TOTAL_MISSOES)
+    }));
   });
 
   const [novoNomeEquipe, setNovoNomeEquipe] = useState("");
@@ -205,11 +224,7 @@ export default function App() {
       id: Date.now(),
       nome: novoNomeEquipe,
       pontosManual: 0, 
-      exercicios: Array.from({ length: 10 }, () => ({
-        status: "default",
-        tempoEx: "",       
-        tempoGastoSeg: 0   
-      }))
+      exercicios: Array.from({ length: TOTAL_MISSOES }, criarExercicio)
     };
 
     setEquipes([...equipes, nova]);
@@ -294,7 +309,7 @@ export default function App() {
     let csv = `COMPETIÇÃO / LOCAL:;${tituloEvento};;;;;\n\n`;
     csv += "Rank;Equipe;Pts Desafios;Pts Missoes;Tempo Total Gasto;";
     
-    for (let i = 1; i <= 10; i++) { csv += `EX ${i};`; }
+    for (let i = 1; i <= TOTAL_MISSOES; i++) { csv += `EX ${i};`; }
     csv += "\n";
 
     equipesOrdenadas.forEach((eq, idx) => {
@@ -392,7 +407,7 @@ export default function App() {
                 <tr>
                   <th className="col-rank">Rank</th>
                   <th className="col-nome">Equipe</th>
-                  {Array.from({ length: 10 }).map((_, i) => (
+                  {Array.from({ length: TOTAL_MISSOES }).map((_, i) => (
                     <th key={i} className="celula-exercicio">EX{i + 1}</th>
                   ))}
                   <th className="col-total-pts">Pts Ex</th>
